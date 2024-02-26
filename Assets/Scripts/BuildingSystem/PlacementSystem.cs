@@ -51,7 +51,11 @@ public class PlacementSystem : MonoBehaviour
     {
         StopPlacement();
         _gridVisualization.SetActive(true) ;
-        _buildingState = new RemovingState(_grid, _previewSystem, _floorData, _furnitureData, _objectPlacer);
+        _buildingState = new RemovingState(_grid,
+                                           _previewSystem,
+                                           _floorData,
+                                           _furnitureData,
+                                           _objectPlacer);
         _inputManager._OnClicked += PlaceStructure;
         _inputManager._OnExit += StopPlacement;
     }

@@ -6,14 +6,14 @@ using static Unity.VisualScripting.Member;
 public class PlacementState : IBuildingState
 {
     private int _selectedObjectIndex = -1;
-    int _id;
-    Grid _grid;
-    PreviewSystem _previewSystem;
-    ObjectsDatabaseSO _databaseSO;
-    GridData _floorData;
-    GridData _furnitureData;
-    ObjectPlacer _objectPlacer;
-    Vector3 _offset = new Vector3(0f,0.5f,0.5f);
+    private int _id;
+    private Grid _grid;
+    private PreviewSystem _previewSystem;
+    private ObjectsDatabaseSO _databaseSO;
+    private GridData _floorData;
+    private GridData _furnitureData;
+    private ObjectPlacer _objectPlacer;
+    private Vector3 _offset = new Vector3(0f,0.5f,0.5f);
 
     public PlacementState(int iD,
                           Grid grid,
@@ -78,7 +78,7 @@ public class PlacementState : IBuildingState
             _floorData :
             _furnitureData;
 
-        return selectedData.CanPlaceObejctAt(gridPosition, _databaseSO._objectsData[selectedObjectIndex].Size);
+        return selectedData.CanPlaceObjectAt(gridPosition, _databaseSO._objectsData[selectedObjectIndex].Size);
     }
 
     public void UpdateState(Vector3Int gridPosition)

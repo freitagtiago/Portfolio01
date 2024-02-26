@@ -60,16 +60,16 @@ public class PreviewSystem : MonoBehaviour
         }
     }
 
-    public void UpdatePosition(Vector3 position, bool validity)
+    public void UpdatePosition(Vector3 position, bool isValid)
     {
         if(_previewObject != null)
         {
             MovePreview(position);
-            ApplyFeedbackToPreview(validity);
+            ApplyFeedbackToPreview(isValid);
 
         }
         MoveCursor(position);
-        ApplyFeedbackToCursor(validity);
+        ApplyFeedbackToCursor(isValid);
     }
 
     private void ApplyFeedbackToPreview(bool isValid)

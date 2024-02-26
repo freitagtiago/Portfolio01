@@ -6,11 +6,12 @@ using UnityEngine;
 public class RemovingState : IBuildingState
 {
     private int _gameObjectIndex = -1;
-    Grid _grid;
-    PreviewSystem _previewSystem;
-    GridData _floorData;
-    GridData _furnitureData;
-    ObjectPlacer _objectPlacer;
+    private PreviewSystem _previewSystem;
+    private Grid _grid;
+    private GridData _floorData;
+    private GridData _furnitureData;
+    private ObjectPlacer _objectPlacer;
+    private Vector3 _offset = new Vector3(0f, 0.5f, 0.5f);
 
     public RemovingState(Grid grid,
                          PreviewSystem previewSystem,
@@ -34,11 +35,11 @@ public class RemovingState : IBuildingState
     public void OnAction(Vector3Int gridPosition)
     {
         GridData selectedData = null;
-        if(_furnitureData.CanPlaceObejctAt(gridPosition,Vector2Int.one) == false)
+        if(_furnitureData.CanPlaceObjectAt(gridPosition,Vector2Int.one) == false)
         {
             selectedData = _furnitureData;
         }
-        else if(_floorData.CanPlaceObejctAt(gridPosition, Vector2Int.one) == false)
+        else if(_floorData.CanPlaceObjectAt(gridPosition, Vector2Int.one) == false)
         {
             selectedData = _floorData;
         }
@@ -47,23 +48,30 @@ public class RemovingState : IBuildingState
         {
             _gameObjectIndex = selectedData.GetRepresentationIndex(gridPosition);
             if (_gameObjectIndex == -1)
+            {
                 return;
+            }
             selectedData.RemoveObjectAt(gridPosition);
             _objectPlacer.RemoveObjectAt(_gameObjectIndex);
         }
         Vector3 cellPosition = _grid.CellToWorld(gridPosition);
+        cellPosition += _offset;
         _previewSystem.UpdatePosition(cellPosition, CheckIfSelectionIsValid(gridPosition));
     }
 
     private bool CheckIfSelectionIsValid(Vector3Int gridPosition)
     {
-        return !(_furnitureData.CanPlaceObejctAt(gridPosition, Vector2Int.one) &&
-            _floorData.CanPlaceObejctAt(gridPosition, Vector2Int.one));
+        return !(_furnitureData.CanPlaceObjectAt(gridPosition, Vector2Int.one) &&
+            _floorData.CanPlaceObjectAt(gridPosition, Vector2Int.one));
     }
 
     public void UpdateState(Vector3Int gridPosition)
     {
-        bool validity = CheckIfSelectionIsValid(gridPosition);
-        _previewSystem.UpdatePosition(_grid.CellToWorld(gridPosition), validity);
+        bool isValid = CheckIfSelectionIsValid(gridPosition);
+
+        Vector3 cellPosition = _grid.CellToWorld(gridPosition);
+        cellPosition += _offset;
+
+        _previewSystem.UpdatePosition(cellPosition, isValid);
     }
 }

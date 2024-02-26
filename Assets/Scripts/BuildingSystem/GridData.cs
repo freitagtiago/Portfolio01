@@ -35,7 +35,7 @@ public class GridData
         return returnVal;
     }
 
-    public bool CanPlaceObejctAt(Vector3Int gridPosition, Vector2Int objectSize)
+    public bool CanPlaceObjectAt(Vector3Int gridPosition, Vector2Int objectSize)
     {
         List<Vector3Int> positionToOccupy = CalculatePositions(gridPosition, objectSize);
         foreach (var pos in positionToOccupy)
@@ -48,8 +48,10 @@ public class GridData
 
     internal int GetRepresentationIndex(Vector3Int gridPosition)
     {
-        if (_placedObjects.ContainsKey(gridPosition) == false)
+        if (_placedObjects.ContainsKey(gridPosition) == false) 
+        {
             return -1;
+        }
         return _placedObjects[gridPosition].PlacedObjectIndex;
     }
 
